@@ -1,0 +1,18 @@
+/* linker.ld — bare-metal memory layout */
+ENTRY(_start)
+
+MEMORY
+{
+  RAM : ORIGIN = 0x80000000, LENGTH = 64K
+}
+
+SECTIONS
+{
+  .text : { *(.text*) } > RAM
+  .data : { *(.data*) } > RAM
+  .bss  (NOLOAD) : { *(.bss*) } > RAM
+
+  _stack_top = ORIGIN(RAM) + LENGTH(RAM);
+  _sbss = ADDR(.bss);
+  _ebss = _stack_top;
+}
